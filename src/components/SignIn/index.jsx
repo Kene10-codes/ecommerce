@@ -1,11 +1,7 @@
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom';
-import {
-  emailSignInStart,
-  resetAuthAllForms,
-  signInUser,
-} from '../../redux/User/userAction';
+import {emailSignInStart, resetAuthAllForms} from '../../redux/User/userAction';
 import {signInWithGoogle} from '../../redux/User/userAction';
 import AuthWrapper from '../authWrapper';
 import FormInput from '../../components/forms/FormInput';
@@ -13,11 +9,11 @@ import Button from '../forms/Button';
 import './styles.scss';
 
 const mapState = ({user}) => ({
-  signInSuccess: user.signInSuccess,
+  currentUser: user.currentUser,
 });
 
 export default function SignIn () {
-  const {signInSuccess} = useSelector (mapState);
+  const {currentUser} = useSelector (mapState);
   const [email, setEmail] = useState ('');
   const [password, setPassword] = useState ('');
   const dispatch = useDispatch ();
@@ -31,13 +27,12 @@ export default function SignIn () {
 
   useEffect (
     () => {
-      if (signInSuccess) {
+      if (currentUser) {
         resetForm ();
-        dispatch (resetAuthAllForms ());
         // navigate ('/');
       }
     },
-    [signInSuccess]
+    [currentUser]
   );
 
   // Handle Form Submit Func

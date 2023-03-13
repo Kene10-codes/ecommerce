@@ -2,7 +2,12 @@
 import {initializeApp} from 'firebase/app';
 import {doc, getFirestore} from 'firebase/firestore';
 import {addDoc, collection, serverTimestamp} from 'firebase/firestore';
-import {getAuth, signInWithPopup, GoogleAuthProvider} from 'firebase/auth';
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+} from 'firebase/auth';
 import {firebaseConfig} from './config';
 import {useRef} from 'react';
 
@@ -17,7 +22,6 @@ GoogleProvider.setCustomParameters ({prompt: 'select_account'});
 
 export const handleUserProfile = async (user, data) => {
   if (!user) return;
-  console.log ('user', user);
   const {uid} = user.currentUser;
   // console.log (uid);
   // const {displayName, email, uid} = user.currentUser;
@@ -46,8 +50,17 @@ export const handleUserProfile = async (user, data) => {
         ...data,
       });
     } catch (err) {
-      console.log (err + 'FAILED!!!');
+      // console.log (err + 'FAILED!!!');
     }
   }
   return userRef;
+};
+
+export const getCurrentuser = () => {
+  return new Promise ((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged (user => {
+      unsubscribe ();
+      resolve (user);
+    }, reject);
+  });
 };

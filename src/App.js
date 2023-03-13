@@ -14,26 +14,26 @@ import Dashboard from './pages/Dashboard';
 import WithAuth from './components/hoc/withAuth';
 
 function App () {
-  const dispatch = useDispatch ();
+  // const dispatch = useDispatch ();
 
-  useEffect (() => {
-    const unsubscribe = auth.onAuthStateChanged (async user => {
-      if (user) {
-        const useRef = await handleUserProfile (auth);
-        onSnapshot (useRef, snapshot => {
-          dispatch (
-            setCurrentUser ({
-              id: snapshot.id,
-              ...snapshot.data (),
-            })
-          );
-        });
-      }
-      dispatch (setCurrentUser (user));
-    });
+  // useEffect (() => {
+  //   const unsubscribe = auth.onAuthStateChanged (async user => {
+  //     if (user) {
+  //       const useRef = await handleUserProfile (auth);
+  //       onSnapshot (useRef, snapshot => {
+  //         dispatch (
+  //           setCurrentUser ({
+  //             id: snapshot.id,
+  //             ...snapshot.data (),
+  //           })
+  //         );
+  //       });
+  //     }
+  //     dispatch (setCurrentUser (user));
+  //   });
 
-    return () => unsubscribe ();
-  });
+  //   return () => unsubscribe ();
+  // });
 
   return (
     <div className="App">
