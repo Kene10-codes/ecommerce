@@ -1,9 +1,7 @@
 import {useEffect} from 'react';
 import {Routes, Route} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
-import {auth, handleUserProfile} from './firebase/utils';
-import {onSnapshot} from 'firebase/firestore';
-import {setCurrentUser} from './redux/User/userAction';
+import {checkUserSession} from './redux/User/userAction';
 import HomeLayout from './components/homeLayout'; // Home Layout
 import MainLayout from './components/mainLayout'; // Main Layout
 import Registration from './pages/Registration';
@@ -14,26 +12,11 @@ import Dashboard from './pages/Dashboard';
 import WithAuth from './components/hoc/withAuth';
 
 function App () {
-  // const dispatch = useDispatch ();
+  const dispatch = useDispatch ();
 
-  // useEffect (() => {
-  //   const unsubscribe = auth.onAuthStateChanged (async user => {
-  //     if (user) {
-  //       const useRef = await handleUserProfile (auth);
-  //       onSnapshot (useRef, snapshot => {
-  //         dispatch (
-  //           setCurrentUser ({
-  //             id: snapshot.id,
-  //             ...snapshot.data (),
-  //           })
-  //         );
-  //       });
-  //     }
-  //     dispatch (setCurrentUser (user));
-  //   });
-
-  //   return () => unsubscribe ();
-  // });
+  useEffect (() => {
+    dispatch (checkUserSession ());
+  }, []);
 
   return (
     <div className="App">

@@ -25,6 +25,14 @@ export const checkUserSession = () => ({
   type: userTypes.CHECK_USER_SESSION,
 });
 
+export const signOutUserStart = () => ({
+  type: userTypes.SIGN_OUT_USER_START,
+});
+
+export const signOutUserSuccess = () => ({
+  type: userTypes.SIGN_OUT_USER_,
+});
+
 export const resetAuthAllForms = () => ({
   type: userTypes.AUTH_RESET_FORM,
 });

@@ -31,9 +31,13 @@ export function* onEmailSignInStart () {
 }
 
 export function* isUserAuthenticated () {
-  const userAuth = yield getCurrentuser ();
-  if (!userAuth) return;
-  yield getSnapshotFromUserAuth (userAuth);
+  try {
+    const userAuth = yield getCurrentuser ();
+    if (!userAuth) return;
+    yield getSnapshotFromUserAuth (userAuth);
+  } catch (err) {
+    //console.log(err)
+  }
 }
 
 export function* onCheckUserSession () {
