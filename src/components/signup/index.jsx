@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom';
-import {resetAuthAllForms, signUpUser} from '../../redux/User/userAction';
+import {signUpUserStart} from '../../redux/User/userAction';
 import Button from '../../components/forms/Button';
 import FormInput from '../forms/FormInput';
 import AuthWrapper from '../authWrapper';
@@ -9,8 +9,8 @@ import AuthWrapper from '../authWrapper';
 import './styles.scss';
 
 const mapState = ({user}) => ({
-  signUpSuccess: user.signUpSuccess,
-  signUpError: user.signUpError,
+  currentUser: user.currentUser,
+  userError: user.userError,
 });
 
 // initial states
@@ -27,34 +27,33 @@ const configWrapper = {
 };
 
 export default function Signup () {
-  const {signUpSuccess, signUpError} = useSelector (mapState);
+  const {currentUser, userError} = useSelector (mapState);
   const [user, setUser] = useState (initialState);
   const navigate = useNavigate ();
   const dispatch = useDispatch ();
 
   useEffect (
     () => {
-      if (signUpSuccess) {
+      if (currentUser) {
         reset ();
-        dispatch (resetAuthAllForms ());
         // navigate ('/');
       }
     },
-    [signUpSuccess]
+    [currentUser]
   );
 
   useEffect (
     () => {
-      if (Array.isArray (signUpError) && signUpError.length > 0) {
+      if (Array.isArray (userError) && userError.length > 0) {
         setUser (prev => {
           return {
             ...prev,
-            errors: signUpError,
+            errors: userError,
           };
         });
       }
     },
-    [signUpError]
+    [userError]
   );
 
   function reset () {
@@ -82,7 +81,7 @@ export default function Signup () {
   const handleFormSubmit = async e => {
     e.preventDefault ();
     dispatch (
-      signUpUser ({
+      signUpUserStart ({
         displayName,
         email,
         password,
