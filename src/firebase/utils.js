@@ -1,7 +1,12 @@
 // Import the functions you need from the SDKs y
 import {initializeApp} from 'firebase/app';
-import {doc, getFirestore} from 'firebase/firestore';
-import {addDoc, collection, serverTimestamp} from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  getFirestore,
+  doc,
+  serverTimestamp,
+} from 'firebase/firestore';
 import {
   getAuth,
   signInWithPopup,
@@ -40,13 +45,15 @@ export const handleUserProfile = async (user, data) => {
   const userRef = doc (`users/${uid}`);
   const snapshot = await userRef.get ();
 
-  if (!snapshot.exist) {
+  if (!snapshot.exists) {
     const {displayName, email} = user.currentUser;
+    const userRoles = ['user'];
     try {
       await useRef.set ({
         displayName,
         email,
         createdAt: serverTimestamp (),
+        userRoles,
         ...data,
       });
     } catch (err) {

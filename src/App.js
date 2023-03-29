@@ -10,6 +10,9 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import WithAuth from './components/hoc/withAuth';
+import WithAdminAuth from './components/hoc/withAdminAuth';
+import Admin from './pages/Admin';
+import AdminToolbar from './components/adminToolbar';
 
 function App () {
   const dispatch = useDispatch ();
@@ -20,6 +23,7 @@ function App () {
 
   return (
     <div className="App">
+      <AdminToolbar />
       <Routes>
         <Route
           exact
@@ -66,6 +70,17 @@ function App () {
                 <Dashboard />
               </MainLayout>
             </WithAuth>
+          }
+        />
+
+        <Route
+          path="/admin"
+          element={
+            <WithAdminAuth>
+              <MainLayout>
+                <Admin />
+              </MainLayout>
+            </WithAdminAuth>
           }
         />
       </Routes>
