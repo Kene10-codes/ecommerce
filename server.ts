@@ -1,7 +1,9 @@
 
 // Initialize dotenv 
-const dotenv = require("dotenv")
-dotenv.config()
+require("dotenv").config()
+
+// Initialize database
+require('./config/db')()
 
 // Specified the port
 const PORT = Number(process.env.PORT) || 3100
