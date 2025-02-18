@@ -95,16 +95,58 @@ const getCustomer = async (req, res) => {
     const { id } = req.params;
 
     // Get customer
-    const customer = await Customer.findById({_id: id})
+    const customer = await Customer.findById({ _id: id });
 
     // Destructure email, name
-    const {email, name} = customer
-    
+    const { email, name } = customer;
+
     // Check if customer with the ID exists
-    if(!customer) return res.status(400).send("No customer with ID found")
+    if (!customer) return res.status(400).send("No customer with ID found");
 
     // Return customer
-    res.status(200).send({email, name})
+    res.status(200).send({ email, name });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Delete a customer
+const deleteCustomer = async (req, res) => {
+  try {
+    // Delete a customer
+    const customer = await Customer.findByIdAndDelete({ _id: req.params.id });
+
+    // Check if customer with ID exists
+    if (!customer) return res.status(400).send("No Customer with ID found");
+
+    // Return customer
+    res.status(400).send("Customer deleted successfully");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Delete a customer
+const updateCustomer = async (req, res) => {
+  try {
+    const { email, name, phone, password } = req.body;
+    // Delete a customer
+    const customer = await Customer.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        name,
+        email,
+        phone,
+        password,
+      },
+      { new: true }
+    );
+
+    // Check if customer with ID exists
+    if (!customer) return res.status(400).send("No Customer with ID found");
+
+    // Return customer
+    res.status(400).send("Customer updated successfully");
   } catch (error) {
     console.log(error);
   }
@@ -112,5 +154,7 @@ const getCustomer = async (req, res) => {
 module.exports = {
   registerCustomer,
   getCustomers,
-  getCustomer
+  getCustomer,
+  deleteCustomer,
+  updateCustomer,
 };
