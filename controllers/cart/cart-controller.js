@@ -1,9 +1,9 @@
 const Customer = require("../../models/Customer");
-const Order = require("../../models/Order");
 const { orderValidator } = require("../../validator/order/order-validator");
+const Cart = require("../../models/Cart");
 
 // Order upload
-const addOrder = async (req, res) => {
+const addToCart = async (req, res) => {
   try {
     const { error } = orderValidator.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -12,10 +12,11 @@ const addOrder = async (req, res) => {
     const customer = await Customer.findById({ _id: req.user.id });
 
     // Create order
-    const order = Order.create({
+    const order = Cart.create({
       customerId: customer._id,
       productName: req.body.productName,
       productDesc: req.body.productDesc,
+      quantity: req.body.quantity,
       price: req.body.price,
     });
 
@@ -27,9 +28,9 @@ const addOrder = async (req, res) => {
 };
 
 // Delete order
-const deleteOrder = async (req, res) => {
+const deleteCart = async (req, res) => {
   try {
-    const order = await Order.findByIdAndDelete({ _id: req.params.id });
+    const order = await Cart.findByIdAndDelete({ _id: req.params.id });
     if (!order) return res.status(400).send("No order with the ID found");
 
     res.status(200).send("Order successfully deleted");
@@ -39,9 +40,9 @@ const deleteOrder = async (req, res) => {
 };
 
 // Update Order
-const updateOrder = async (req, res) => {
+const updateCart = async (req, res) => {
   try {
-    const updatedOrder = await Order.findByIdAndUpdate(
+    const updatedOrder = await Cart.findByIdAndUpdate(
       { _id: req.params.id },
       {
         productName: req.body.productName,
@@ -59,9 +60,9 @@ const updateOrder = async (req, res) => {
 };
 
 // Get order
-const getOrder = async (req, res) => {
+const getCart = async (req, res) => {
   try {
-    const order = await Order.findById({ _id: req.params.id });
+    const order = await Cart.findById({ _id: req.params.id });
     if (!order) return res.status(400).send("No order found");
 
     // Return order
@@ -72,4 +73,4 @@ const getOrder = async (req, res) => {
 };
 
 // Export order controllers
-module.exports = { addOrder, deleteOrder, updateOrder, getOrder };
+module.exports = { addToCart, updateCart, deleteCart, getCart,};

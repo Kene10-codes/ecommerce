@@ -2,15 +2,11 @@
 // Initialize dotenv 
 require("dotenv").config()
 
-// Reeuire server
+// Require server
 const server = require('./app')
 
 // Specified the port
 const PORT = Number(process.env.PORT) || 3100
-
-// Import express module
-const express = require('express');
-
 
 /*  Initialize damtabase
 *   Imports the routes

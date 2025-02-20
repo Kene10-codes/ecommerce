@@ -4,21 +4,25 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const orderSchema = new Schema({
-  orderId: {
+const cartSchema = new Schema({
+  customerId: {
     type: Schema.Types.ObjectId,
-    ref: "Cart",
+    ref: "Customer",
     required: true,
   },
-  order: {
-    type: Array,
+  productName: {
+    type: String,
     required: true,
   },
-  totalQuantity: {
+  productDesc: {
+    type: String,
+    required: true,
+  },
+  quantity: {
     type: Number,
-    required: true,
+    require: true,
   },
-  totalPrice: {
+  price: {
     type: String,
     required: true,
   },
@@ -28,6 +32,6 @@ const orderSchema = new Schema({
   },
 });
 
-const Order = mongoose.model("Order", orderSchema);
+const Cart = mongoose.model("Cart", cartSchema);
 
-module.exports = Order;
+module.exports = Cart;

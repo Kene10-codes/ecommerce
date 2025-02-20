@@ -4,6 +4,7 @@ const Joi = require("joi");
 const orderValidator = Joi.object({
   productName: Joi.string().required(),
   productDesc: Joi.string().required(),
+  quantity: Joi.number().required(),
   price: Joi.string().required(),
 });
 
