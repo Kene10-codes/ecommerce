@@ -72,7 +72,7 @@ const getCustomers = async (req, res) => {
       .limit(perPage)
       .exec();
 
-    // Count umber of docus
+    // Count the number of customers
     const count = await Customer.countDocuments();
     const nextPage = parseInt(page) + 1;
     const hasNextPage = nextPage <= Math.ceil(count / perPage);
@@ -80,6 +80,7 @@ const getCustomers = async (req, res) => {
     if (!customers || customers.length === 0)
       return res.status(400).send("No customer found");
 
+    // Return customers
     res
       .status(200)
       .send({ customers, nextPage: hasNextPage ? nextPage : null });

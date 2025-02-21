@@ -5,6 +5,7 @@ const session = require("express-session");
 const customerRoutes = require("../routes/customer/customer-routes");
 const adminRoutes = require("../routes/admin/admin-routes");
 const cartRoutes = require("../routes/cart/cart-router");
+const productRoutes = require("../routes/product/product-routes")
 
 module.exports = (app) => {
   // Helmet  Initialize
@@ -35,4 +36,5 @@ module.exports = (app) => {
   app.use("/api/v1/customer", customerRoutes);
   app.use("/api/v1/admin", adminRoutes);
   app.use("/api/v1/cart", cartRoutes);
+  app.use("/api/v1/product", productRoutes)
 };

@@ -1,27 +1,44 @@
 const Customer = require("../../models/Customer");
-const { orderValidator } = require("../../validator/order/order-validator");
+
 const Cart = require("../../models/Cart");
+const { orderValidator } = require("../../validator/order/order-validator");
 
 // Order upload
 const addToCart = async (req, res) => {
   try {
+    const { price, quantity } = req.body;
     const { error } = orderValidator.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     // Find customer
     const customer = await Customer.findById({ _id: req.user.id });
 
-    // Create order
-    const order = Cart.create({
-      customerId: customer._id,
-      productName: req.body.productName,
-      productDesc: req.body.productDesc,
-      quantity: req.body.quantity,
-      price: req.body.price,
-    });
+    // Check if ID exists in cart
+    const cart = await Cart.findById({ customerId: req.user.id });
+
+    if (!cart) {
+      // Create order
+      cart = new Cart({
+        customerId: customer._id,
+        items: [],
+      });
+    }
+
+
+    const itemIndex = cart.items.findIndex(
+      (item) => item.productId.toString() === productId
+    );
+    if (itemIndex > -1) {
+      cart.items[itemIndex].quantity += quantity;
+    } else {
+      cart.items.push({ productId, quantity, price });
+    }
+
+    // Save cart
+    await cart.save();
 
     // Return order
-    res.status(200).send(order);
+    res.status(200).send(cart);
   } catch (error) {
     console.error(error);
   }
@@ -73,4 +90,4 @@ const getCart = async (req, res) => {
 };
 
 // Export order controllers
-module.exports = { addToCart, updateCart, deleteCart, getCart,};
+module.exports = { addToCart, updateCart, deleteCart, getCart };
