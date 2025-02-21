@@ -1,26 +1,40 @@
-const Customer = require("../../models/Customer");
-const { orderValidator } = require("../../validator/order/order-validator");
 const Product = require("../../models/Product");
+const upload = require("../../services/multer");
 
-// Order upload
+
+// Add product
 const addProduct = async (req, res) => {
-  try {
-    const { productName, productDesc, quantity, price } = req.body;
-    /// Create product
-    const product = await Product.create({
-      productName,
-      productDesc,
-      quantity,
-      price,
-    });
+  // Upload product images
+upload(req, res, async (err) => {
+    if (err) {
+      return res.status(400).send({ message: err });
+    } else {
+      if (req.files == undefined || req.files.length === 0) {
+        return res.status(400).send({ message: 'No files selected!' });
+      } else {
+        try {
+          console.log(req.files)
+          const photoUrls = req.files.map(file => `/uploads/${file.filename}`);
+          const { productName, productDesc, quantity, price } = req.body;
 
-    // Return product
-    res.status(200).send(product);
-  } catch (error) {
-    console.error(error);
-  }
+          const product = new Product({
+            productName,
+            productDesc,
+            quantity,
+            photoUrls,
+            price,
+          });
+
+          await product.save();
+          res.status(200).send(product);
+        } catch (error) {
+          console.error(error);
+          res.status(500).send("Internal Server Error");
+        }
+      }
+    }
+  });
 };
-
 // Get all products
 const getAllProducts = async (req, res) => {
   try {

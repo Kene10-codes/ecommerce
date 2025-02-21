@@ -36,5 +36,5 @@ module.exports = (app) => {
   app.use("/api/v1/customer", customerRoutes);
   app.use("/api/v1/admin", adminRoutes);
   app.use("/api/v1/cart", cartRoutes);
-  app.use("/api/v1/product", productRoutes)
+  app.use("/api/v1/products", productRoutes)
 };
