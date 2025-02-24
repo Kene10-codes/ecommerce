@@ -54,7 +54,7 @@ const registerCustomer = async (req, res) => {
       .header("x-auth-token", accessToken)
       .send("Cusomter registered successfully");
   } catch (error) {
-    console.error("Error", error);
+    res.status(500).send({ message: "Internal Server Error" });
   }
 };
 
@@ -85,7 +85,7 @@ const getCustomers = async (req, res) => {
       .status(200)
       .send({ customers, nextPage: hasNextPage ? nextPage : null });
   } catch (error) {
-    console.log(error);
+    res.status(500).send({ message: "Internal Server Error" });
   }
 };
 
@@ -107,7 +107,7 @@ const getCustomer = async (req, res) => {
     // Return customer
     res.status(200).send({ email, name });
   } catch (error) {
-    console.log(error);
+    res.status(500).send({ message: "Internal Server Error" });
   }
 };
 
@@ -123,7 +123,7 @@ const deleteCustomer = async (req, res) => {
     // Return customer
     res.status(400).send("Customer deleted successfully");
   } catch (error) {
-    console.log(error);
+    res.status(500).send({ message: "Internal Server Error" });
   }
 };
 
@@ -149,7 +149,7 @@ const updateCustomer = async (req, res) => {
     // Return customer
     res.status(400).send("Customer updated successfully");
   } catch (error) {
-    console.log(error);
+    res.status(500).send({ message: "Internal Server Error" });
   }
 };
 module.exports = {

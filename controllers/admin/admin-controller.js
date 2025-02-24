@@ -8,6 +8,7 @@ const { adminValidator } = require("../../validator/admin/admin-validator");
 
 // Admin signup
 const signupAdmin = async (req, res) => {
+
   try {
     const { email, password } = req.body;
     // Validate admin information
@@ -16,7 +17,7 @@ const signupAdmin = async (req, res) => {
     if (error) return res.status(400).send(error.details[0].message);
 
     // Check if admin exists already
-    const adminExists = await Admin.findOne({ email: req.body.email });
+    const adminExists = await Admin.findOne({ email });
     if (adminExists) return res.status(400).send("Admin exists already");
 
     // Hash aadmin password
@@ -46,7 +47,7 @@ const signupAdmin = async (req, res) => {
     // Return response
     res.header("x-admin-token", token).status(201).send("Admin created");
   } catch (error) {
-    console.log(error);
+    res.status(500).send({ message: 'Internal Server Error' });
   }
 };
 

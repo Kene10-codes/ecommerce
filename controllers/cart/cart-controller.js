@@ -40,7 +40,7 @@ const addToCart = async (req, res) => {
     // Return order
     res.status(200).send(cart);
   } catch (error) {
-    console.error(error);
+    res.status(500).send({ message: 'Internal Server Error' });
   }
 };
 
@@ -52,7 +52,7 @@ const deleteCart = async (req, res) => {
 
     res.status(200).send("Order successfully deleted");
   } catch (error) {
-    console.error(error);
+    res.status(500).send({ message: 'Internal Server Error' });
   }
 };
 
@@ -72,7 +72,7 @@ const updateCart = async (req, res) => {
     // Return updated Order
     res.status(200).send("Order updated");
   } catch (error) {
-    console.error(error);
+    res.status(500).send({ message: 'Internal Server Error' });
   }
 };
 
@@ -85,7 +85,7 @@ const getCart = async (req, res) => {
     // Return order
     res.status(200).send(order);
   } catch (error) {
-    console.error(error);
+    res.status(500).send({ message: 'Internal Server Error' });
   }
 };
 

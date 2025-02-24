@@ -1,39 +1,26 @@
 const Product = require("../../models/Product");
 const upload = require("../../services/multer");
 
-
 // Add product
 const addProduct = async (req, res) => {
-  // Upload product images
-upload(req, res, async (err) => {
-    if (err) {
-      return res.status(400).send({ message: err });
-    } else {
-      if (req.files == undefined || req.files.length === 0) {
-        return res.status(400).send({ message: 'No files selected!' });
-      } else {
-        try {
-          console.log(req.files)
-          const photoUrls = req.files.map(file => `/uploads/${file.filename}`);
-          const { productName, productDesc, quantity, price } = req.body;
+  try {
+    console.log(req.files);
+    // const photoUrls = req.files.map((file) => `/uploads/${file.filename}`);
+    const { productName, productDesc, quantity, price } = req.body;
 
-          const product = new Product({
-            productName,
-            productDesc,
-            quantity,
-            photoUrls,
-            price,
-          });
+    const product = new Product({
+      productName,
+      productDesc,
+      quantity,
+      // photoUrls,
+      price,
+    });
 
-          await product.save();
-          res.status(200).send(product);
-        } catch (error) {
-          console.error(error);
-          res.status(500).send("Internal Server Error");
-        }
-      }
-    }
-  });
+    await product.save();
+    res.status(200).send(product);
+  } catch (error) {
+    res.status(500).send({ message: 'Internal Server Error' });
+  }
 };
 // Get all products
 const getAllProducts = async (req, res) => {
@@ -60,7 +47,7 @@ const getAllProducts = async (req, res) => {
     // Return products
     res.status(200).send({ products, nextPage: hasNextPage ? nextPage : null });
   } catch (error) {
-    console.error(error);
+    res.status(500).send({ message: 'Internal Server Error' });
   }
 };
 
@@ -73,7 +60,7 @@ const getProduct = async (req, res) => {
     // Return order
     res.status(200).send(product);
   } catch (error) {
-    console.error(error);
+    res.status(500).send({ message: 'Internal Server Error' });
   }
 };
 
